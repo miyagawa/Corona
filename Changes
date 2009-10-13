@@ -1,0 +1,4 @@
+Revision history for Perl extension Plack::Server::Coro
+
+0.01  Mon Oct 12 23:38:36 2009
+        - original version
