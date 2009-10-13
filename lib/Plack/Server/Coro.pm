@@ -1,5 +1,7 @@
 package Plack::Server::Coro;
 use strict;
+use 5.008_001;
+our $VERSION = "0.01";
 
 sub new {
     my $class = shift;
@@ -136,6 +138,10 @@ This web server sets C<psgi.multithread> env var on.
 =head1 AUTHOR
 
 Tatsuhiko Miyagawa
+
+=head1 LICENSE
+
+This module is licensed under the same terms as Perl itself.
 
 =head1 SEE ALSO
 

@@ -1,17 +1,37 @@
 NAME
-    Plack::Server::Coro -
+    Plack::Server::Coro - Coro cooperative multithread web server
 
 SYNOPSIS
-      use Plack::Server::Coro;
+      plackup -i Coro
 
 DESCRIPTION
-    Plack::Server::Coro is
+    This is a Coro based Plack web server. It uses Net::Server::Coro under
+    the hood, which means we have coroutines (threads) for each socket,
+    active connections and a main loop.
+
+    Because it's Coro based your web application can actually block with I/O
+    wait as long as it yields when being blocked, to the other coroutine
+    either explicitly with "cede" or automatically (via Coro::* magic).
+
+      # your web application
+      use Coro::LWP;
+      my $content = LWP::Simple:;get($url); # this yields to other threads when IO blocks
+
+    This server also uses Coro::AIO (and IO::AIO) if available, to send the
+    static filehandle using sendfile(2).
+
+    The simple benchmark shows this server gives 2000 requests per second in
+    the simple Hello World app, and 300 requests to serve 2MB photo files
+    when used with AIO modules. Brilliantly fast.
+
+    This web server sets "psgi.multithread" env var on.
 
 AUTHOR
-    Tatsuhiko Miyagawa <miyagawa@bulknews.net>
+    Tatsuhiko Miyagawa
 
 LICENSE
-    This library is free software; you can redistribute it and/or modify it
-    under the same terms as Perl itself.
+    This module is licensed under the same terms as Perl itself.
 
 SEE ALSO
+    Coro Net::Server::Coro Coro::AIO
+
