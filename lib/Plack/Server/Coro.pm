@@ -26,7 +26,6 @@ use HTTP::Status;
 use Scalar::Util;
 use List::Util qw(sum max);
 use Plack::HTTPParser qw( parse_http_request );
-use Plack::Middleware::ContentLength;
 use constant MAX_REQUEST_SIZE => 131072;
 
 sub process_request {
@@ -47,6 +46,7 @@ sub process_request {
         'psgi.run_once'     => Plack::Util::FALSE,
         'psgi.multithread'  => Plack::Util::TRUE,
         'psgi.multiprocess' => Plack::Util::FALSE,
+        'psgi.streaming'    => Plack::Util::TRUE,
     };
 
     my $res = [ 400, [ 'Content-Type' => 'text/plain' ], [ 'Bad Request' ] ];
@@ -59,8 +59,7 @@ sub process_request {
 
         my $reqlen = parse_http_request($buf, $env);
         if ($reqlen >= 0) {
-            my $app = Plack::Middleware::ContentLength->wrap($self->{app});
-            $res = Plack::Util::run_app $app, $env;
+            $res = Plack::Util::run_app $self->{app}, $env;
             last;
         } elsif ($reqlen == -2) {
             # incomplete, continue
@@ -68,6 +67,22 @@ sub process_request {
             last;
         }
     }
+
+    if (ref $res eq 'ARRAY') {
+        # PSGI standard
+        $self->_write_response($res, $fh);
+    } elsif (ref $res eq 'CODE') {
+        # delayed return
+        my $cb = Coro::rouse_cb;
+        $res->(sub {
+            $self->_write_response(shift, $fh, $cb);
+        });
+        Coro::rouse_wait $cb;
+    }
+}
+
+sub _write_response {
+    my($self, $res, $fh, $rouse_cb) = @_;
 
     my (@lines, $conn_value);
 
@@ -83,7 +98,12 @@ sub process_request {
 
     $fh->syswrite(join '', @lines);
 
-    if ($HasAIO && Plack::Util::is_real_fh($res->[2])) {
+    if (!defined $res->[2]) {
+        # streaming write
+        return Plack::Util::inline_object
+            write => sub { $fh->syswrite(join '', @_) },
+            close => $rouse_cb;
+    } elsif ($HasAIO && Plack::Util::is_real_fh($res->[2])) {
         my $length = -s $res->[2];
         my $offset = 0;
         while (1) {
@@ -91,10 +111,11 @@ sub process_request {
             $offset += $sent if $sent > 0;
             last if $offset >= $length;
         }
-        return;
+    } else {
+        Plack::Util::foreach($res->[2], sub { $fh->syswrite(join '', @_) });
     }
 
-    Plack::Util::foreach($res->[2], sub { $fh->syswrite(@_) });
+    $rouse_cb->() if $rouse_cb;
 }
 
 package Plack::Server::Coro;
@@ -109,7 +130,7 @@ Plack::Server::Coro - Coro cooperative multithread web server
 
 =head1 SYNOPSIS
 
-  plackup -i Coro
+  plackup --server Coro
 
 =head1 DESCRIPTION
 
