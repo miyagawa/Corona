@@ -3,7 +3,7 @@ name 'Plack-Server-Coro';
 all_from 'lib/Plack/Server/Coro.pm';
 readme_from 'lib/Plack/Server/Coro.pm';
 requires 'Coro';
-requires 'Net::Server::Coro';
+requires 'Net::Server::Coro', 0.5;
 requires 'Plack';
 build_requires 'Test::More';
 use_test_base;
