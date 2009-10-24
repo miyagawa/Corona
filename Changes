@@ -1,4 +1,7 @@
 Revision history for Perl extension Plack::Server::Coro
 
+0.02  Sat Oct 24 01:27:12 PDT 2009
+        - Added psgi.streaming interface
+
 0.01  Mon Oct 12 23:38:36 2009
         - original version

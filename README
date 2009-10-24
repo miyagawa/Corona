@@ -2,7 +2,7 @@ NAME
     Plack::Server::Coro - Coro cooperative multithread web server
 
 SYNOPSIS
-      plackup -i Coro
+      plackup --server Coro
 
 DESCRIPTION
     This is a Coro based Plack web server. It uses Net::Server::Coro under
