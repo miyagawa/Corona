@@ -49,6 +49,7 @@ sub process_request {
         'psgi.multithread'  => Plack::Util::TRUE,
         'psgi.multiprocess' => Plack::Util::FALSE,
         'psgi.streaming'    => Plack::Util::TRUE,
+        'psgix.io'          => $fh->fh,
     };
 
     my $res = [ 400, [ 'Content-Type' => 'text/plain' ], [ 'Bad Request' ] ];
