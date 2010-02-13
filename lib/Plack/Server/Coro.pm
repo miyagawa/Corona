@@ -13,7 +13,12 @@ sub new {
 sub run {
     my($self, $app) = @_;
 
-    my $server = Plack::Server::Coro::Server->new(host => $self->{host} || '*');
+    my $server = Plack::Server::Coro::Server->new(
+        host  => $self->{host}  || '*',
+        user  => $self->{user}  || $>,
+        group => $self->{group} || $),
+        log_level => 1,
+    );
     $server->{app} = $app;
     $server->run(port => $self->{port});
 }
@@ -22,7 +27,7 @@ sub run {
 package Plack::Server::Coro::Server;
 use base qw( Net::Server::Coro );
 
-our $HasAIO = !$ENV{PLACK_NO_SENDFILE} && eval "use Coro::AIO; 1";
+use constant HAS_AIO => !$ENV{PLACK_NO_SENDFILE} && eval "use Coro::AIO; 1";
 
 use HTTP::Status;
 use Scalar::Util;
@@ -106,7 +111,7 @@ sub _write_response {
         return Plack::Util::inline_object
             write => sub { $fh->syswrite(join '', @_) },
             close => $rouse_cb;
-    } elsif ($HasAIO && Plack::Util::is_real_fh($res->[2])) {
+    } elsif (HAS_AIO && Plack::Util::is_real_fh($res->[2])) {
         my $length = -s $res->[2];
         my $offset = 0;
         while (1) {
