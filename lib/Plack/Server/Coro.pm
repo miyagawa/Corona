@@ -148,7 +148,7 @@ magic).
 
   # your web application
   use Coro::LWP;
-  my $content = LWP::Simple:;get($url); # this yields to other threads when IO blocks
+  my $content = LWP::Simple::get($url); # this yields to other threads when IO blocks
 
 This server also uses L<Coro::AIO> (and L<IO::AIO>) if available, to
 send the static filehandle using sendfile(2).
