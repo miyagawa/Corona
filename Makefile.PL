@@ -7,8 +7,6 @@ requires 'Net::Server::Coro', 0.5;
 requires 'Plack', 0.99;
 build_requires 'Test::More';
 install_script 'bin/corona';
-use_test_base;
-auto_include_deps;
 author_tests('xt');
 auto_set_repository;
 WriteAll;

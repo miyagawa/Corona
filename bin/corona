@@ -17,7 +17,8 @@ corona - Corona launcher
 
   corona --listen :9090
 
-Run C<plackup -h> for more options.
+C<corona> is basically an alias for C<plackup -s Corona -E
+deployment>. Run C<plackup -h> to see more options.
 
 =head1 SEE ALSO
 

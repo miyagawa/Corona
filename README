@@ -2,7 +2,7 @@ NAME
     Corona - Coro based PSGI web server
 
 SYNOPSIS
-      plackup --server Corona
+      corona --listen :9090 app.psgi
 
 DESCRIPTION
     Corona is a Coro based Plack web server. It uses Net::Server::Coro under

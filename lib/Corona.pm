@@ -11,7 +11,7 @@ Corona - Coro based PSGI web server
 
 =head1 SYNOPSIS
 
-  plackup --server Corona
+  corona --listen :9090 app.psgi
 
 =head1 DESCRIPTION
 
