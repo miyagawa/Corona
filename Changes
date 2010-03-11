@@ -1,4 +1,7 @@
-Revision history for Perl extension Plack::Server::Coro
+Revision history for Perl extension Corona
+
+0.100
+        - Renamed the software as 'Corona'
 
 0.02  Sat Oct 24 01:27:12 PDT 2009
         - Added psgi.streaming interface

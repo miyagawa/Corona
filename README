@@ -1,11 +1,11 @@
 NAME
-    Plack::Server::Coro - Coro cooperative multithread web server
+    Corona - Coro based PSGI web server
 
 SYNOPSIS
-      plackup --server Coro
+      plackup --server Corona
 
 DESCRIPTION
-    This is a Coro based Plack web server. It uses Net::Server::Coro under
+    Corona is a Coro based Plack web server. It uses Net::Server::Coro under
     the hood, which means we have coroutines (threads) for each socket,
     active connections and a main loop.
 
@@ -15,9 +15,9 @@ DESCRIPTION
 
       # your web application
       use Coro::LWP;
-      my $content = LWP::Simple:;get($url); # this yields to other threads when IO blocks
+      my $content = LWP::Simple::get($url); # this yields to other threads when IO blocks
 
-    This server also uses Coro::AIO (and IO::AIO) if available, to send the
+    Corona also uses Coro::AIO (and IO::AIO) if available, to send the
     static filehandle using sendfile(2).
 
     The simple benchmark shows this server gives 2000 requests per second in

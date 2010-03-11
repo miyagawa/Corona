@@ -1,4 +1,4 @@
 use strict;
 use Test::More tests => 1;
 
-BEGIN { use_ok 'Plack::Server::Coro' }
+BEGIN { use_ok 'Corona::Server' }

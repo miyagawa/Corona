@@ -1,11 +1,12 @@
 use inc::Module::Install;
-name 'Plack-Server-Coro';
-all_from 'lib/Plack/Server/Coro.pm';
-readme_from 'lib/Plack/Server/Coro.pm';
+name 'Corona';
+all_from 'lib/Corona.pm';
+readme_from 'lib/Corona.pm';
 requires 'Coro';
 requires 'Net::Server::Coro', 0.5;
-requires 'Plack';
+requires 'Plack', 0.99;
 build_requires 'Test::More';
+install_script 'bin/corona';
 use_test_base;
 auto_include_deps;
 author_tests('xt');

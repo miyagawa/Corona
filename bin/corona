@@ -1,0 +1,26 @@
+#!/usr/bin/perl
+use strict;
+use lib "lib";
+use Plack::Runner;
+
+my $runner = Plack::Runner->new(server => 'Corona', env => 'deployment');
+$runner->parse_options(@ARGV);
+$runner->run;
+
+__END__
+
+=head1 NAME
+
+corona - Corona launcher
+
+=head1 SYNOPSIS
+
+  corona --listen :9090
+
+Run C<plackup -h> for more options.
+
+=head1 SEE ALSO
+
+L<Corona> L<plackup>
+
+=cut
