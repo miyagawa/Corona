@@ -1,5 +1,8 @@
 Revision history for Perl extension Corona
 
+0.1002 Fri Mar 19 00:43:40 PDT 2010
+        - Add $VERSION to Plack::Server::Coro
+
 0.1001 Tue Mar 16 18:57:15 PDT 2010
         - Include Plack::Server::Coro, now it's an empty subclass of Handler::Corona
 
