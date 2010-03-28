@@ -1,5 +1,8 @@
 Revision history for Perl extension Corona
 
+0.1004 Sun Mar 28 14:37:03 PDT 2010
+        - Implemented corona -v
+
 0.1003 Fri Mar 19 19:20:27 PDT 2010
         - Fixed the namespace in Coro.pm (I suck)
 
