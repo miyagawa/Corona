@@ -3,7 +3,12 @@ use strict;
 use lib "lib";
 use Plack::Runner;
 
-my $runner = Plack::Runner->new(server => 'Corona', env => 'deployment');
+sub version {
+    require Corona;
+    print "Corona $Corona::VERSION\n";
+}
+
+my $runner = Plack::Runner->new(server => 'Corona', env => 'deployment', version_cb => \&version);
 $runner->parse_options(@ARGV);
 $runner->run;
 
