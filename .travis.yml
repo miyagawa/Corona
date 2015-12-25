@@ -1,0 +1,13 @@
+language: perl
+before_install:
+  - cpanm inc::Module::Install Module::Install::AuthorTests Module::Install::ReadmeFromPod Module::Install::Repository
+install:
+  - cpanm Coro Net::Server::Coro~0.5 Plack~0.99
+perl:
+  - "5.20"
+  - "5.18"
+  - "5.16"
+  - "5.14"
+  - "5.12"
+  - "5.10"
+  - "5.8"
