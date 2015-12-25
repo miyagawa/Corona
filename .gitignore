@@ -3,3 +3,11 @@ Makefile
 inc/
 pm_to_blib
 *~
+/Corona-*
+/.build
+/_build_params
+/Build
+/Build.bat
+!Build/
+!META.json
+!LICENSE
